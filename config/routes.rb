@@ -18,4 +18,8 @@ Rails.application.routes.draw do
     # Nest the item resource, this enforces the 1:m (one to many) association at the routing level.
     resources :items
   end
+
+  resources :status_events do
+    # Nest any resources here. This enforces the 1:m association at the routing level.
+  end
 end

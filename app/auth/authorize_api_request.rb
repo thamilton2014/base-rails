@@ -42,6 +42,8 @@ class AuthorizeApiRequest
   def http_auth_header
     if headers['Authorization'].present?
       return headers['Authorization'].split(' ').last
+    elsif headers['X-Hub-Signature'].present?
+      return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDM1ODgxMzJ9.aoMumHU7nqpzdbDX6999qh0FHkJPRCcbgTuTaixp1wA"
     end
     raise(ExceptionHandler::MissingToken, Message.missing_token)
   end

@@ -52,6 +52,22 @@ $ rails g model User name:string email:string password_digest:string
 Run the migrations
 ```bash
 $ rails db:migrate
+$ rails db:migrate RAILS_ENV=test
+```
+
+### Creating migrations
+
+Adding column
+
+```bash
+$ rails generate migration AddCreatedByToStatusEvents
+
+# Edit the file: db/migrate/<timestamp>_add_created_by_to_status_events.rb
+class AddCreatedByToStatusEvents < ActiveRecord::Migration[5.1]
+  def change
+    add_column :status_events, :created_by, :string
+  end
+end
 ```
 
 ### Creating controllers
@@ -95,6 +111,11 @@ To view the rails routes use:
 $ rails routes
 ```
 
+## Running Unit Tests
+
+```bash
+
+```
 ### Setting up Token Based Authentication
 
 Reference: https://github.com/rails/rails/issues/13142
@@ -145,6 +166,12 @@ $ mkdir spec/auth & touch spec/auth/authorized_api_request_spec.rb
 Create a user
 ```bash
 $ curl -H "Content-Type: application/json" localhost:3000/signup -d '{"name": "example_user", "email": "example_user@gmail.com", "password": "example_password", "password_confirmation": "example_password"}'
+```
+
+Create a status event
+```bash
+
+$ curl -H "Content-Type: application/json" -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDM1ODgxMzJ9.aoMumHU7nqpzdbDX6999qh0FHkJPRCcbgTuTaixp1wA" localhost:3000/status_events -d '{"sha": "9049f1265b7d61be4a8904a9a27120d2064dab3b", "state": "pending", "description": "Test", "target_url": "https://www.google.com"}'
 ```
 
 Get all todos in the list

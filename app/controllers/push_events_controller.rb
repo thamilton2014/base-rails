@@ -1,0 +1,2 @@
+class PushEventsController < ApplicationController
+end

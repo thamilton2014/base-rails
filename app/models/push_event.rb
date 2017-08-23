@@ -1,0 +1,2 @@
+class PushEvent < ApplicationRecord
+end

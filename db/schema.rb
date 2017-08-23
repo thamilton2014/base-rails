@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170627031050) do
+ActiveRecord::Schema.define(version: 20170823190023) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
@@ -19,6 +19,26 @@ ActiveRecord::Schema.define(version: 20170627031050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["todo_id"], name: "index_items_on_todo_id"
+  end
+
+  create_table "push_events", force: :cascade do |t|
+    t.string "ref"
+    t.string "head"
+    t.string "before"
+    t.integer "size"
+    t.integer "distinct_size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "status_events", force: :cascade do |t|
+    t.string "sha"
+    t.string "state"
+    t.string "description"
+    t.string "target_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "created_by"
   end
 
   create_table "todos", force: :cascade do |t|
