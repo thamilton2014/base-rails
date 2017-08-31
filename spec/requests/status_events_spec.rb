@@ -3,7 +3,6 @@ require 'rails_helper'
 
 RSpec.describe 'Status Events API' do
   # Initialize the test data
-  # Initialize the test data
   let(:user) { create(:user) }
   let!(:status_events) { create_list(:status_event, 10, created_by: user.id) }
   let(:status_event_id) { status_events.first.id }

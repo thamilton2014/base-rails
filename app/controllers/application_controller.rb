@@ -11,6 +11,10 @@ class ApplicationController < ActionController::API
 
   # Check for valid request token and return user
   def authorize_request
+    # Hacky... I know...
+    if request.headers['X-GitHub-Delivery'].present?
+      request.headers['Authorization'] = request.query_parameters[:token]
+    end
     @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
   end
 end

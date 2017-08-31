@@ -32,7 +32,7 @@ References:
 Initialize the spec directory where our rspec tests reside.
 
 ```bash
-$ rails generaate rspec:install
+$ rails generate rspec:install
 ```
 
 Create a factories directory where we will define the model factories.
@@ -68,6 +68,11 @@ class AddCreatedByToStatusEvents < ActiveRecord::Migration[5.1]
     add_column :status_events, :created_by, :string
   end
 end
+```
+
+Removing column
+```bash
+$ rails generate migration RemoveColumnsFromPushEvents
 ```
 
 ### Creating controllers
@@ -165,20 +170,43 @@ $ mkdir spec/auth & touch spec/auth/authorized_api_request_spec.rb
 
 Create a user
 ```bash
-$ curl -H "Content-Type: application/json" localhost:3000/signup -d '{"name": "example_user", "email": "example_user@gmail.com", "password": "example_password", "password_confirmation": "example_password"}'
+$ curl -H "Content-Type: application/json" localhost:3000/signup -d '{"name": "Thomas Hamilton", "email": "thamilton@rsglab.com", "password": "example_password", "password_confirmation": "example_password"}'
+```
+
+Login user
+```bash
+$ curl -H "Content-Type: application/json" localhost:3000/auth/login -d '{"name": "Example User", "email": "example@gmail.com", "password": "example_password", "password_confirmation": "example_password"}'
 ```
 
 Create a status event
 ```bash
+$ curl -H "Content-Type: application/json" -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDQwNjAwODR9._p9CFGp_Q9SGVIHIVsROQDYDm5V3co3NTH6qox_B_bU" localhost:3000/status_events -d '{"sha": "9049f1265b7d61be4a8904a9a27120d2064dab3b", "state": "pending", "description": "Test", "target_url": "https://www.google.com"}'
+```
 
-$ curl -H "Content-Type: application/json" -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDM1ODgxMzJ9.aoMumHU7nqpzdbDX6999qh0FHkJPRCcbgTuTaixp1wA" localhost:3000/status_events -d '{"sha": "9049f1265b7d61be4a8904a9a27120d2064dab3b", "state": "pending", "description": "Test", "target_url": "https://www.google.com"}'
+Test push event webhook
+```bash
+$ curl -H "Content-Type: application/json" -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDQwNjAwODR9._p9CFGp_Q9SGVIHIVsROQDYDm5V3co3NTH6qox_B_bU" localhost:3000/push_events -d '{"push_event": { "ref": "9049f1265b7d61be4a8904a9a27120d2064dab3b"}}'
+```
+
+Test status event webhook
+```bash
+curl -H "Content-Type: application/json" -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDQwNjAwODR9._p9CFGp_Q9SGVIHIVsROQDYDm5V3co3NTH6qox_B_bU" localhost:3000/status_events -d '{"sha": "9049f1265b7d61be4a8904a9a27120d2064dab3b", "state": "pending", "description": "Test", "target_url": "https://www.google.com"}'
 ```
 
 Get all todos in the list
 ```bash
-$ curl -H "Authorization: <example_token_here>" localhost:3000/todos
+$ curl -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDM1ODgxMzJ9.aoMumHU7nqpzdbDX6999qh0FHkJPRCcbgTuTaixp1wA" localhost:3000/todos
 ```
 
+Create Pull Request
+```bash
+$ curl -vX POST http://localhost:3000/pull_requests -d @spec/fixtures/pull_request.json --header "Content-Type: application/json" --header "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MDQyODEzNDl9.AuXH8CUu5SWgZSwVwjBmr0D06CT01IwWzE8ntp8i1iE"
+```
+
+Reset database
+```bash
+$ rake db:reset db:migrate
+```
 ## Todo
 
 ### Models
@@ -195,6 +223,53 @@ Create some more baseline controllers
 $ rails g controller Profiles
 $ rails g controller Contacts
 $ rails g controller Jobs
+```
+
+## Adding Background jobs
+
+### Starting SideKiq
+
+```bash
+sidekiq -C config/sidekiq.yml
+```
+
+### ActiveJob
+
+Add sidekick adapter
+
+```ruby
+module Atlas
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.1
+
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration should go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded.
+
+    # Only loads a smaller set of middleware suitable for API only apps.
+    # Middleware like session, flash, cookies can be added back manually.
+    # Skip views, helpers and assets when generating a new resource.
+    config.api_only = true
+
+    # Add SideKiq for out background job queue.
+    config.active_job.queue_adapter = :sidekiq
+  end
+end
+```
+
+Generate a job
+
+```bash
+rails generate job Example
+```
+
+### SideKiq
+
+https://github.com/mperham/sidekiq/wiki/Getting-Started
+
+```bash
+$ rails g sidekiq:worker Hard
 ```
 
 Things you may want to cover:

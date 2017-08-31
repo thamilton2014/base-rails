@@ -19,7 +19,22 @@ Rails.application.routes.draw do
     resources :items
   end
 
+  # Status Events
   resources :status_events do
     # Nest any resources here. This enforces the 1:m association at the routing level.
   end
+
+  # Pull Request Events
+  resources :pull_requests do
+
+  end
+
+  # Push Events
+  resources :push_events do
+
+  end
+
+  # Adding SideKiq routes
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 end

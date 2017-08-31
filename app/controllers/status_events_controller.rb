@@ -2,10 +2,6 @@
 class StatusEventsController < ApplicationController
   before_action :set_status_event, only: [:show, :update, :destroy]
 
-  #
-  # Example Auth Token
-  #   eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE1MDM1ODgxMzJ9.aoMumHU7nqpzdbDX6999qh0FHkJPRCcbgTuTaixp1wA
-
   # GET /status_events
   def index
     @status_events = current_user.status_events
@@ -39,7 +35,7 @@ class StatusEventsController < ApplicationController
 
   # Whitelist the parameters
   def status_event_params
-    # params.permit(:payload, :sha, :state, :description, :target_url)
+    params.permit(:sha, :state, :description, :target_url)
   end
 
   # Get the event based on the id.

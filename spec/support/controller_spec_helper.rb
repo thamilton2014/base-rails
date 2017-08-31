@@ -18,6 +18,14 @@ module ControllerSpecHelper
     }
   end
 
+  # return github headers
+  def github_headers
+    {
+        "X-GitHub-Delivery" => "72d3162e-cc78-11e3-81ab-4c9367dc0958",
+        "Content-Type" => "application/json"
+    }
+  end
+
   # return invalid headers
   def invalid_headers
     {

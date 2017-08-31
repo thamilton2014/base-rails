@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+User.create(name: "Example User", email: "example@gmail.com", password: "example_password", password_confirmation: "example_password")
+auth_token = AuthenticateUser.new("example@gmail.com", "example_password").call
+puts auth_token
+

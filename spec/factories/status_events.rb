@@ -6,4 +6,4 @@ FactoryGirl.define do
     description { Faker::Lorem.sentence(3) }
     target_url { Faker::Internet.url }
   end
-end
+end # => end FactoryGirl
