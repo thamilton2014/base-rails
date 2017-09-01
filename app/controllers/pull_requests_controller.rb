@@ -12,6 +12,7 @@ class PullRequestsController < ApplicationController
   def create
     @pull_request = current_user.pull_requests.create!(pull_request_params)
     @pull_request.execute(pull_request_head_params.to_json, pull_request_repo_params.to_json)
+
     json_response(@pull_request, :created)
   end
 
@@ -34,17 +35,48 @@ class PullRequestsController < ApplicationController
 
   private
 
+  def base_params
+    whitelist = [
+        :action,
+        :number
+    ]
+    params.permit(whitelist)
+  end
+
   # Whitelist the pull request parameters
   def pull_request_params
-    params.require(:pull_request).permit(:url, :id, :html_url, :diff_url, :patch_url, :issue_url, :number, :state, :locked, :title)
+    whitelist = [
+        :url,
+        :id,
+        :html_url,
+        :diff_url,
+        :patch_url,
+        :issue_url,
+        :number,
+        :state,
+        :locked,
+        :title
+    ]
+    params.require(:pull_request).permit(whitelist)
   end
 
   def pull_request_head_params
-    params.require(:pull_request).require(:head).permit(:label, :ref, :sha)
+    whitelist = [
+      :label,
+      :ref,
+      :sha
+    ]
+    params.require(:pull_request).require(:head).permit(whitelist)
   end
 
   def pull_request_repo_params
-    params.require(:pull_request).require(:head).require(:repo).permit(:id, :name, :full_name, :html_url)
+    whitelist = [
+        :id,
+        :name,
+        :full_name,
+        :html_url
+    ]
+    params.require(:pull_request).require(:head).require(:repo).permit(whitelist)
   end
 
   # Get the pull request event based on the id.

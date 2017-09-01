@@ -9,7 +9,7 @@ class BuildSpec
   def initialize(client = Docker.default)
     @client = client
     # state - pending | success | failure | error
-    @gh = Octokit::Client.new(:access_token => "ed920b64b6ff2203022ea81e89d5b1845ea9bff3")
+    @gh = Octokit::Client.new(:access_token => "92142e1fcdfd4da770035950fe8749dd3b417afc")
     # client.startup
   end
 

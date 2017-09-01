@@ -200,7 +200,7 @@ $ curl -H "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0L
 
 Create Pull Request
 ```bash
-$ curl -vX POST http://localhost:3000/pull_requests -d @spec/fixtures/pull_request.json --header "Content-Type: application/json" --header "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MDQyODEzNDl9.AuXH8CUu5SWgZSwVwjBmr0D06CT01IwWzE8ntp8i1iE"
+$ curl -vX POST http://localhost:3000/pull_requests -d @spec/fixtures/pull_request.json --header "Content-Type: application/json" --header "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1MDQzMTcwMDF9.m5Sw-KHO3qrW5DhvdZuJ5aljKmjdOWJoXJFEMWoMD6I"
 ```
 
 Reset database
